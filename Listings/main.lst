@@ -1,0 +1,117 @@
+C51 COMPILER V9.54   MAIN                                                                  04/04/2022 19:09:36 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\software\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "mxkey.h"
+   2          #include <regx52.h>
+   3          #include "dk.h"
+   4          #include "LCD1602.h"
+   5          #include "Buzzer.h"
+   6          #define k1 P3_1
+   7          #define k2 P3_0
+   8          #define k3 P3_2
+   9          #define k4 P3_3
+  10          unsigned int count,ho,mi,se,kn,ho1,mi1,se1;
+  11          void main()
+  12          {
+  13   1        Timer0_Init();
+  14   1        LCD_Init();
+  15   1        
+  16   1        while(1)
+  17   1        {
+  18   2          LCD_ShowNum(1,1,ho,2);
+  19   2          LCD_ShowChar(1,3,':');
+  20   2          LCD_ShowNum(1,4,mi,2);
+  21   2          LCD_ShowChar(1,6,':');
+  22   2          LCD_ShowNum(1,7,se,2);
+  23   2          LCD_ShowNum(2,1,ho1,2);
+  24   2          LCD_ShowChar(2,3,':');
+  25   2          LCD_ShowNum(12,4,mi1,2);
+  26   2          LCD_ShowChar(2,6,':');
+  27   2          LCD_ShowNum(2,7,se1,2);
+  28   2          while(se==60)
+  29   2          {
+  30   3            mi++;
+  31   3            se=0;
+  32   3          }
+  33   2          while(mi==60)
+  34   2          {
+  35   3            mi=0;
+  36   3            ho++;
+  37   3          }
+  38   2          if(k1==0)   
+  39   2          {
+  40   3            delay(20);
+  41   3            while(k1==0);
+  42   3            delay(20);
+  43   3            se++;
+  44   3          }
+  45   2              if(k2==0)   
+  46   2          {
+  47   3            delay(20);
+  48   3            while(k2==0);
+  49   3            delay(20);
+  50   3            mi++;
+  51   3          }
+  52   2              if(k3==0)   
+  53   2          {
+  54   3            delay(20);
+C51 COMPILER V9.54   MAIN                                                                  04/04/2022 19:09:36 PAGE 2   
+
+  55   3            while(k3==0);
+  56   3            delay(20);
+  57   3            ho++;
+  58   3          }
+  59   2          if(k4==0)   
+  60   2          {
+  61   3            delay(20);
+  62   3            while(k4==0);
+  63   3            delay(20);
+  64   3            se1=ho1=mi1=0;
+  65   3          }
+  66   2          kn=mxkey();
+  67   2            switch(kn)
+  68   2            {
+  69   3              case 1:se1++;break;
+  70   3              case 2:mi1++;break;
+  71   3              case 3:ho1++;break;
+  72   3            }
+  73   2            while(se==se1 && mi==mi1 && ho==ho1)
+  74   2            {
+  75   3              Buzzer_Time(100);
+  76   3            }
+  77   2        }
+  78   1      }
+  79          
+  80          void Timer0_Routine() interrupt 1
+  81          {
+  82   1        TH0=64535/256;
+  83   1        TL0=64535%256;
+  84   1        count++;
+  85   1        if(count>+1000)
+  86   1        {
+  87   2          count=0;
+  88   2          se++;
+  89   2        }
+  90   1          
+  91   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    440    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
